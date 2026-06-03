@@ -3,59 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SY的晨与午</title>
+    <title>SY · 晨与午</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            max-width: 800px;
-            margin: 60px auto;
-            padding: 20px;
-            background-color: #faf9f6;
-            color: #2c2c2c;
-            line-height: 1.6;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Georgia', serif;
+            background-color: #faf8f3;
+            color: #2c2a28;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* 头部 */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid #e2dcd0;
+            padding-bottom: 2rem;
+        }
+
         h1 {
+            font-size: 2.8rem;
+            letter-spacing: 2px;
             color: #8b5a2b;
-            font-size: 2.5rem;
+            font-weight: 400;
             margin-bottom: 0.5rem;
         }
-        .subtitle {
-            color: #a0a0a0;
-            border-bottom: 1px solid #e0dcd3;
-            padding-bottom: 1rem;
+
+        .tagline {
+            font-size: 1rem;
+            color: #8f8a7c;
+            margin-top: 0.5rem;
         }
-        a {
-            color: #8b5a2b;
-            text-decoration: none;
+
+        /* 简介卡片 */
+        .intro {
+            background: #fffdf9;
+            border-left: 6px solid #b87c4f;
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            border-radius: 0 12px 12px 0;
         }
-        a:hover {
-            text-decoration: underline;
+
+        .intro p {
+            font-size: 1.1rem;
+            color: #3e3a35;
         }
+
+        /* 五个板块 */
+        .section-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 1.4rem 1.8rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: all 0.2s ease;
+            border: 1px solid #eee8df;
+        }
+
+        .card:hover {
+            border-color: #d9cebc;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
+        }
+
+        .card h2 {
+            font-size: 1.6rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            display: inline-block;
+            background: linear-gradient(135deg, #8b5a2b 0%, #b87c4f 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        .card p {
+            color: #4a4640;
+            margin-top: 0.5rem;
+        }
+
+        hr {
+            margin: 2rem 0;
+            border: none;
+            height: 1px;
+            background: #e2dcd0;
+        }
+
         .footer {
-            margin-top: 3rem;
-            font-size: 0.9rem;
-            color: #aaa;
             text-align: center;
+            color: #9e9a8c;
+            font-size: 0.85rem;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2dcd0;
+        }
+
+        a {
+            color: #b87c4f;
+            text-decoration: none;
+            border-bottom: 1px dotted #d9cebc;
+        }
+
+        a:hover {
+            color: #8b5a2b;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            .card {
+                padding: 1rem 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>🍵 SY的晨与午</h1>
-    <p class="subtitle">前PMC · 器物爱好者 · 数据分析转行人</p >
+<div class="container">
+    <div class="header">
+        <h1>🍵 SY的晨与午</h1>
+        <div class="tagline">
+            现役陶瓷器具爱好者 · 数据分析学习者<br>
+            食疗治愈 · AI编程兴趣者 · 投资理财参与者
+        </div>
+    </div>
 
-    <h2>📋 关于我</h2>
-    <ul>
-        <li>🏭 从制造业PMC转行，懂供应链的痛</li>
-        <li>📊 正在学数据分析（SQL + Power BI + Codex）</li>
-        <li>🍶 喜欢陶瓷，在记录「SY的晨与午」</li>
-    </ul>
+    <div class="intro">
+        <p>
+        前PMC，从制造业走向数据与器物。<br>
+        在这里记录：转行数据分析的学习笔记、器物的日常、一个人好好吃饭的疗愈感，以及慢慢变富的定投路。
+        </p >
+    </div>
 
-    <h2>📌 在这个网站</h2>
-    <p>我会记录转行数据分析的学习笔记、定投记录、以及一些关于器物与生活的碎碎念。</p >
+    <div class="section-grid">
+        <div class="card">
+            <h2>🏺 陶瓷器具 · 美与日常</h2>
+            <p>喜欢有手感的器物。一只碗、一个手捏杯，盛的是食物，也是生活的安静时刻。<br>
+            → 正在做「SY的晨与午」器物记录</p >
+        </div>
+
+        <div class="card">
+            <h2>📊 数据分析 · 转行中</h2>
+            <p>SQL / Power BI / Codex · 用数据理解业务。不是纯技术人，而是「懂供应链的转行人」。<br>
+            → 目标：供应链数据分析 / AI产品助理</p >
+        </div>
+
+        <div class="card">
+            <h2>🥣 食疗治愈 · 慢慢养自己</h2>
+            <p>五黑粉、汤羹、好好吃饭。不节食、不跟风，把胃和心一起养回来。<br>
+            → 小红书「晨与午」的疗愈角落</p >
+        </div>
+
+        <div class="card">
+            <h2>🤖 AI编程 · 用工具创造</h2>
+            <p>Codex / Cursor / GitHub Pages。不写复杂代码，但能用AI搭建网站、辅助数据分析。<br>
+            → 从零搭好个人网站的人</p >
+        </div>
+
+        <div class="card">
+            <h2>📈 投资理财 · 慢慢变富</h2>
+            <p>纳指 + 标普 + 黄金 · 每月定投。不炒、不赌，用20年换一间中古风房子。<br>
+            → 长期主义实践者</p >
+        </div>
+    </div>
 
     <div class="footer">
-        <p>📧 联系我：你的邮箱</2264635417@qq.com>
-        <p>✨ 从23岁开始，为自己搭一间中古风的房子</p >
+        <p>📌 从23岁开始，为自己搭一间中古风的房子。</p >
+        <p style="margin-top: 0.5rem;">
+            📧 2264635417@qq.com
+        </p >
     </div>
+</div>
 </body>
 </html>
