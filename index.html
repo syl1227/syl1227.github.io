@@ -1,207 +1,158 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SY · 晨与午</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+        body {
+            background: #fefaf5;
+            font-family: 'Georgia', 'Times New Roman', '宋体', serif;
+            color: #2c2a28;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
 
-  
-  
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
 
-<meta name="generator" content="Hexo 7.3.0"></head>
+        header {
+            text-align: center;
+            border-bottom: 2px solid #e6d5c3;
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+        }
 
+        h1 {
+            font-size: 3rem;
+            color: #8b5a2b;
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        .sub {
+            color: #a08f7a;
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .intro-card {
+            background: #fffcf8;
+            border-left: 6px solid #b87c4f;
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            border-radius: 0 16px 16px 0;
+        }
+
+        .grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 1.5rem 2rem;
+            border: 1px solid #f0e4d4;
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: #d4bc9a;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.03);
+        }
+
+        .card h2 {
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: #7a4c2c;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e6d5c3;
+            color: #a79278;
+            font-size: 0.8rem;
+        }
+
+        a {
+            color: #9b6e42;
+            text-decoration: none;
+            border-bottom: 1px dotted #d9c5ae;
+        }
+
+        a:hover {
+            color: #6b3e1c;
+        }
+    </style>
+</head>
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
+<div class="container">
+    <header>
+        <h1>🍵 SY的晨与午</h1>
+        <div class="sub">
+            现役陶瓷器具爱好者 · 数据分析学习者<br>
+            食疗治愈 · AI编程兴趣者 · 投资理财参与者
+        </div>
+    </header>
+
+    <div class="intro-card">
+        <p style="font-size:1.05rem;">
+        前PMC，从制造业走向数据与器物。<br>
+        在这里记录：转行数据分析的学习笔记、器物的日常、一个人好好吃饭的疗愈感，以及慢慢变富的定投路。
+        </p >
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
+
+    <div class="grid">
+        <div class="card">
+            <h2>🏺 陶瓷器具 · 美与日常</h2>
+            <p>喜欢有手感的器物。一只碗、一个手捏杯，盛的是食物，也是生活的安静时刻。<br>
+            📌 正在做「SY的晨与午」器物记录</p >
+        </div>
+
+        <div class="card">
+            <h2>📊 数据分析 · 转行中</h2>
+            <p>SQL / Power BI / Codex · 用数据理解业务。<br>
+            🎯 目标：供应链数据分析 / AI产品助理</p >
+        </div>
+
+        <div class="card">
+            <h2>🥣 食疗治愈 · 慢慢养自己</h2>
+            <p>五黑粉、汤羹、好好吃饭。把胃和心一起养回来。<br>
+            🌿 小红书「晨与午」的疗愈角落</p >
+        </div>
+
+        <div class="card">
+            <h2>🤖 AI编程 · 用工具创造</h2>
+            <p>Codex / Cursor / GitHub Pages。从零搭好个人网站，用AI辅助数据分析。<br>
+            🧩 不写复杂代码，但能用工具创造价值</p >
+        </div>
+
+        <div class="card">
+            <h2>📈 投资理财 · 慢慢变富</h2>
+            <p>纳指 + 标普 + 黄金 · 每月定投。<br>
+            🏡 用20年换一间中古风房子</p >
+        </div>
     </div>
-  </div>
-</header>
 
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/06/03/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2026-06-03T07:10:15.491Z" itemprop="datePublished">2026-06-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/06/03/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
+    <div class="footer">
+        <p>📧 syl1227@outlook.com</p >
+        <p>从23岁开始，为自己搭一间中古风的房子 🌙</p >
+        <p>GitHub · </p >
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2026/06/03/hello-world/" data-id="cmpxqdafm00003wjmcthp0gzr" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">June 2026</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2026/06/03/hello-world/">Hello World</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2026 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.6.4.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
+</div>
 </body>
 </html>
