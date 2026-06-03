@@ -2,197 +2,74 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SY · 晨与午</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', 'Roboto', 'Georgia', serif;
-            background-color: #faf8f3;
+            font-family: 'Segoe UI', 'Georgia', serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fefaf0;
             color: #2c2a28;
             line-height: 1.6;
-            padding: 2rem 1rem;
         }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        /* 头部 */
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            border-bottom: 1px solid #e2dcd0;
-            padding-bottom: 2rem;
-        }
-
         h1 {
-            font-size: 2.8rem;
-            letter-spacing: 2px;
-            color: #8b5a2b;
-            font-weight: 400;
-            margin-bottom: 0.5rem;
+            color: #7a4c2c;
+            font-size: 2.5rem;
+            border-left: 5px solid #b67e4a;
+            padding-left: 20px;
         }
-
-        .tagline {
-            font-size: 1rem;
-            color: #8f8a7c;
-            margin-top: 0.5rem;
-        }
-
-        /* 简介卡片 */
-        .intro {
-            background: #fffdf9;
-            border-left: 6px solid #b87c4f;
-            padding: 1.5rem;
-            margin-bottom: 2.5rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-            border-radius: 0 12px 12px 0;
-        }
-
-        .intro p {
-            font-size: 1.1rem;
-            color: #3e3a35;
-        }
-
-        /* 五个板块 */
-        .section-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            margin-bottom: 2.5rem;
-        }
-
         .card {
-            background: #ffffff;
+            background: #fffff7;
             border-radius: 20px;
-            padding: 1.4rem 1.8rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-            transition: all 0.2s ease;
-            border: 1px solid #eee8df;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #eee0cc;
         }
-
-        .card:hover {
-            border-color: #d9cebc;
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
-        }
-
-        .card h2 {
-            font-size: 1.6rem;
-            font-weight: 500;
-            margin-bottom: 0.75rem;
-            display: inline-block;
-            background: linear-gradient(135deg, #8b5a2b 0%, #b87c4f 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            letter-spacing: -0.3px;
-        }
-
-        .card p {
-            color: #4a4640;
-            margin-top: 0.5rem;
-        }
-
-        hr {
-            margin: 2rem 0;
-            border: none;
-            height: 1px;
-            background: #e2dcd0;
-        }
-
         .footer {
             text-align: center;
-            color: #9e9a8c;
-            font-size: 0.85rem;
-            margin-top: 3rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #e2dcd0;
+            margin-top: 40px;
+            color: #aaa;
+            font-size: 0.8rem;
         }
-
         a {
-            color: #b87c4f;
+            color: #b67e4a;
             text-decoration: none;
-            border-bottom: 1px dotted #d9cebc;
-        }
-
-        a:hover {
-            color: #8b5a2b;
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 1rem;
-            }
-            h1 {
-                font-size: 2rem;
-            }
-            .card {
-                padding: 1rem 1.2rem;
-            }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <h1>🍵 SY的晨与午</h1>
-        <div class="tagline">
-            现役陶瓷器具爱好者 · 数据分析学习者<br>
-            食疗治愈 · AI编程兴趣者 · 投资理财参与者
-        </div>
+    <h1>🍵 SY的晨与午</h1>
+    <p style="font-size:1.1rem;">现役陶瓷器具爱好者 · 数据分析学习者 · 食疗治愈 · AI编程兴趣者 · 投资理财参与者</p >
+
+    <div class="card">
+        <h2>🏺 陶瓷器具</h2>
+        <p>用器物安放日常，正在记录「SY的晨与午」。</p >
     </div>
 
-    <div class="intro">
-        <p>
-        前PMC，从制造业走向数据与器物。<br>
-        在这里记录：转行数据分析的学习笔记、器物的日常、一个人好好吃饭的疗愈感，以及慢慢变富的定投路。
-        </p >
+    <div class="card">
+        <h2>📊 数据分析</h2>
+        <p>SQL / Power BI / Codex，目标：AI主理人</p >
     </div>
 
-    <div class="section-grid">
-        <div class="card">
-            <h2>🏺 陶瓷器具 · 美与日常</h2>
-            <p>喜欢有手感的器物。一只碗、一个手捏杯，盛的是食物，也是生活的安静时刻。<br>
-            → 正在做「SY的晨与午」器物记录</p >
-        </div>
+    <div class="card">
+        <h2>🥣 食疗治愈</h2>
+        <p>五黑粉、汤羹，好好吃饭，把胃和心养回来。</p >
+    </div>
 
-        <div class="card">
-            <h2>📊 数据分析 · 转行中</h2>
-            <p>SQL / Power BI / Codex · 用数据理解业务。不是纯技术人，而是「懂供应链的转行人」。<br>
-        </div>
+    <div class="card">
+        <h2>🤖 AI编程</h2>
+        <p>用Codex搭网站、辅助数据分析。</p >
+    </div>
 
-        <div class="card">
-            <h2>🥣 食疗治愈 · 慢慢养自己</h2>
-            <p>五黑粉、汤羹、好好吃饭。不节食、不跟风，把胃和心一起养回来。<br>
-            → 小红书「晨与午」的疗愈角落</p >
-        </div>
-
-        <div class="card">
-            <h2>🤖 AI编程 · 用工具创造</h2>
-            <p>Codex / Cursor / GitHub Pages。不写复杂代码，但能用AI搭建网站、辅助数据分析。<br>
-            → 从零搭好个人网站的人</p >
-        </div>
-
-        <div class="card">
-            <h2>📈 投资理财 · 慢慢变富</h2>
-            <p>纳指 + 标普 + 黄金 · 每月定投。期待拥有一间中古风房子。<br>
-            → 长期主义实践者</p >
-        </div>
+    <div class="card">
+        <h2>📈 投资理财</h2>
+        <p>纳指+标普+黄金，每月定投，慢慢变富。</p >
     </div>
 
     <div class="footer">
-        <p>📌 从23岁开始，为自己搭一间中古风的房子。</p >
-        <p style="margin-top: 0.5rem;">
-            📧 2264635417@qq.com
-        </p >
+        <p>📧 2264635417@qq.com</p >
+        <p>从23岁开始，为自己搭一间中古风的房子。</p >
     </div>
-</div>
 </body>
 </html>
