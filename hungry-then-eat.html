@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>饿了那就 🍜</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #fdf6ee;
+    --card: #fffaf3;
+    --card-border: #f0e4d0;
+    --text: #5c4b3c;
+    --text-light: #8b7355;
+    --accent: #e07b5a;
+    --accent-soft: #f5d5c5;
+    --success: #c4a97d;
+    --pot: #a0522d;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-xs: 8px;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100dvh;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, #fff3e8 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, #fde8d8 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, #fdf6ee 0%, transparent 70%);
+  }
+
+  /* ===== container ===== */
+  .app { max-width: 520px; margin: 0 auto; padding: 24px 16px 48px; min-height: 100dvh; display: flex; flex-direction: column; }
+
+  /* ===== header ===== */
+  .header {
+    text-align: center;
+    padding: 28px 0 16px;
+    position: relative;
+  }
+  .header-logo { font-size: 56px; display: block; animation: float 3s ease-in-out infinite; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+  .header .subtitle {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  /* ===== main screen ===== */
+  .screen { display: none; flex: 1; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  .theme-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    padding: 8px 0;
+  }
+  .theme-card {
+    background: var(--card);
+    border: 1.5px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 22px 16px 18px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.25s cubic-bezier(.4,0,.2,1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .theme-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-soft);
+  }
+  .theme-card:active {
+    transform: scale(0.97);
+  }
+  .theme-card .card-emoji { font-size: 48px; display: block; margin-bottom: 8px; }
+  .theme-card .card-name { font-size: 18px; font-weight: 700; color: var(--text); }
+  .theme-card .card-desc { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+
+  /* ===== game screen ===== */
+  .game-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0 16px;
+  }
+  .back-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid var(--card-border);
+    background: var(--card);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    color: var(--text);
+    flex-shrink: 0;
+  }
+  .back-btn:hover { background: var(--accent-soft); border-color: transparent; }
+  .game-title { font-size: 24px; font-weight: 800; flex: 1; }
+  .step-indicator {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 600;
+    background: var(--accent-soft);
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  /* ===== ingredient grid ===== */
+  .section-label {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+  .ingredient-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .ingredient {
+    background: var(--card);
+    border: 1.5px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    padding: 14px 6px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+  }
+  .ingredient:hover {
+    border-color: var(--accent-soft);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+  .ingredient:active { transform: scale(0.93); }
+  .ingredient.selected {
+    border-color: var(--accent);
+    background: #fff0e8;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .ingredient .emoji { font-size: 36px; display: block; margin-bottom: 4px; transition: transform 0.3s; }
+  .ingredient.selected .emoji { animation: bounce 0.4s ease; }
+  @keyframes bounce {
+    0%, 100% { transform: scale(1); }
+    40% { transform: scale(1.3); }
+    60% { transform: scale(0.85); }
+  }
+  .ingredient .name { font-size: 12px; color: var(--text-light); }
+
+  /* ===== pot area ===== */
+  .pot-area {
+    background: var(--card);
+    border: 2px dashed var(--card-border);
+    border-radius: var(--radius);
+    padding: 20px 16px;
+    text-align: center;
+    margin-bottom: 16px;
+    min-height: 100px;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .pot-area.has-items { border-color: var(--accent-soft); border-style: solid; }
+  .pot-area.cooking { border-color: var(--accent); background: #fff5f0; }
+  .pot-emoji { font-size: 52px; display: block; transition: all 0.5s; }
+  .pot-area.cooking .pot-emoji { animation: bubble 0.4s ease-in-out infinite; }
+  @keyframes bubble {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-6px) scale(1.06); }
+  }
+  .pot-label { font-size: 13px; color: var(--text-light); margin-top: 6px; }
+  .selected-items { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 10px; }
+  .selected-chip {
+    background: #fff0e8;
+    border: 1px solid var(--accent-soft);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 14px;
+    display: flex; align-items: center; gap: 4px;
+    animation: popIn 0.3s ease;
+  }
+  @keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    70% { transform: scale(1.15); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* ===== buttons ===== */
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 14px 20px;
+    border-radius: 28px;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    letter-spacing: 1px;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn:active { transform: scale(0.95); }
+  .btn-primary {
+    background: linear-gradient(135deg, #e07b5a, #d46845);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(224,123,90,0.35);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 6px 20px rgba(224,123,90,0.45);
+    transform: translateY(-1px);
+  }
+  .btn-primary:disabled {
+    background: #ddd;
+    color: #999;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .btn-secondary {
+    background: var(--card);
+    color: var(--text);
+    border: 1.5px solid var(--card-border);
+  }
+  .btn-secondary:hover {
+    border-color: var(--accent-soft);
+    background: #fffaf5;
+  }
+  .btn-eat {
+    background: linear-gradient(135deg, #f0a830, #e09620);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(240,168,48,0.35);
+    font-size: 18px;
+    padding: 16px 28px;
+  }
+
+  /* ===== result overlay ===== */
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100;
+    animation: fadeIn 0.3s ease;
+    padding: 20px;
+  }
+  @keyframes fadeIn { from { opacity: 0; } }
+  .result-card {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 36px 28px 28px;
+    text-align: center;
+    max-width: 380px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    animation: slideUp 0.4s cubic-bezier(.4,0,.2,1);
+  }
+  @keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+  }
+  .result-emoji { font-size: 72px; display: block; margin-bottom: 12px; animation: float 2s ease-in-out infinite; }
+  .result-title { font-size: 26px; font-weight: 800; color: var(--accent); margin-bottom: 8px; }
+  .result-desc { font-size: 15px; color: var(--text-light); line-height: 1.6; margin-bottom: 20px; }
+  .confetti {
+    position: fixed;
+    font-size: 24px;
+    pointer-events: none;
+    animation: confettiFall 1.5s ease-out forwards;
+    z-index: 101;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-60px) rotate(0deg) scale(1); opacity: 1; }
+    100% { transform: translateY(105vh) rotate(720deg) scale(0.3); opacity: 0; }
+  }
+
+  /* ===== steam animation ===== */
+  .steam-container {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    pointer-events: none;
+  }
+  .steam {
+    width: 6px;
+    height: 24px;
+    background: rgba(200,180,160,0.5);
+    border-radius: 10px;
+    animation: steamUp 0.8s ease-out infinite;
+  }
+  .steam:nth-child(2) { animation-delay: 0.25s; }
+  .steam:nth-child(3) { animation-delay: 0.5s; }
+  @keyframes steamUp {
+    0% { transform: translateY(0) scaleX(1); opacity: 0.7; }
+    100% { transform: translateY(-22px) scaleX(1.6); opacity: 0; }
+  }
+
+  /* ===== timer ===== */
+  .timer-ring {
+    width: 70px; height: 70px;
+    margin: 0 auto 12px;
+    position: relative;
+  }
+  .timer-ring svg { transform: rotate(-90deg); }
+  .timer-ring .bg { fill: none; stroke: var(--card-border); stroke-width: 5; }
+  .timer-ring .progress { fill: none; stroke: var(--accent); stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 0.3s linear; }
+  .timer-text {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800; color: var(--accent);
+  }
+
+  /* ===== responsive ===== */
+  @media (min-width: 640px) {
+    .app { max-width: 640px; padding: 32px 24px 56px; }
+    .theme-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .ingredient-grid { grid-template-columns: repeat(6, 1fr); gap: 12px; }
+    .theme-card { padding: 24px 16px 20px; }
+    .theme-card .card-emoji { font-size: 44px; }
+    .theme-card .card-name { font-size: 16px; }
+  }
+  @media (max-width: 380px) {
+    .ingredient-grid { grid-template-columns: repeat(4, 1fr); }
+    .theme-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .theme-card { padding: 14px 8px 12px; }
+    .theme-card .card-emoji { font-size: 32px; }
+    .theme-card .card-name { font-size: 13px; }
+    .header h1 { font-size: 26px; }
+  }
+
+  /* ===== add-theme card ===== */
+  .theme-card.add-new {
+    border-style: dashed;
+    border-color: var(--accent-soft);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 130px;
+  }
+  .theme-card.add-new .add-icon {
+    font-size: 36px;
+    color: var(--accent);
+    opacity: 0.7;
+  }
+  .theme-card.add-new .add-text {
+    font-size: 14px;
+    color: var(--text-light);
+    font-weight: 600;
+  }
+  .theme-card .delete-custom {
+    position: absolute;
+    top: 6px; right: 8px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0,0,0,0.08);
+    font-size: 12px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-light);
+    transition: all 0.2s;
+    z-index: 2;
+    line-height: 1;
+  }
+  .theme-card .delete-custom:hover {
+    background: #fce4e4;
+    color: #d44;
+  }
+
+  /* ===== creation modal ===== */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 200;
+    padding: 20px;
+    animation: fadeIn 0.25s ease;
+  }
+  .modal {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 28px 22px 22px;
+    max-width: 440px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    animation: slideUp 0.35s cubic-bezier(.4,0,.2,1);
+  }
+  .modal h3 {
+    font-size: 22px;
+    color: var(--accent);
+    margin-bottom: 18px;
+    text-align: center;
+  }
+  .modal .form-group {
+    margin-bottom: 14px;
+  }
+  .modal label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+  }
+  .modal input, .modal select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--card-border);
+    border-radius: var(--radius-xs);
+    font-size: 15px;
+    background: #fffdf8;
+    color: var(--text);
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+  .modal input:focus { outline: none; border-color: var(--accent); }
+  .modal .inline-row { display: flex; gap: 10px; }
+  .modal .inline-row > * { flex: 1; }
+
+  /* ingredient adder in modal */
+  .ingredient-add-row {
+    display: flex; gap: 8px; margin-bottom: 8px; align-items: center;
+  }
+  .ingredient-add-row input {
+    flex: 1;
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+  .ingredient-add-row .emoji-input { flex: 0 0 50px; text-align: center; font-size: 22px; }
+  .ingredient-add-row .name-input { flex: 1; }
+  .btn-sm {
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: none;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-sm:active { transform: scale(0.93); }
+  .btn-sm-add {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .btn-sm-add:hover { background: #f0c8b0; }
+  .btn-sm-del {
+    background: #fce4e4;
+    color: #d44;
+    padding: 6px 10px;
+    font-size: 14px;
+    border-radius: 50%;
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .modal .ingredient-list {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    min-height: 36px;
+    padding: 8px;
+    background: #fffdf8;
+    border-radius: var(--radius-xs);
+    border: 1px dashed var(--card-border);
+  }
+  .modal .ingredient-list .chip {
+    background: #fff0e8;
+    border: 1px solid var(--accent-soft);
+    border-radius: 16px;
+    padding: 3px 10px;
+    font-size: 13px;
+    display: flex; align-items: center; gap: 3px;
+  }
+  .modal .ingredient-list .empty-hint {
+    color: #ccc;
+    font-size: 13px;
+    width: 100%;
+    text-align: center;
+    padding: 8px 0;
+  }
+  .modal .btn-row { margin-top: 18px; }
+  .modal .btn-row .btn { flex: 1; }
+
+  /* ===== food image display ===== */
+  .food-image-area {
+    display: none;
+    margin: 12px 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--card);
+    border: 1.5px solid var(--card-border);
+    animation: slideUp 0.4s ease;
+  }
+  .food-image-area.show { display: block; }
+  .food-image-area img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+  }
+  .food-image-area .img-placeholder {
+    width: 100%;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 72px;
+    background: linear-gradient(135deg, #fff8f0, #fff3e8);
+  }
+  .food-image-area .img-info {
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-light);
+  }
+  .food-image-area .img-info .img-label {
+    font-weight: 600;
+  }
+  .food-image-area .img-info .img-credit {
+    font-size: 11px;
+    opacity: 0.7;
+  }
+  .btn-share {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1.5px solid var(--card-border);
+    background: var(--card);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text);
+    font-weight: 600;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .btn-share:hover { border-color: var(--accent-soft); background: #fffaf5; }
+  .btn-share:active { transform: scale(0.94); }
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text);
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 300;
+    animation: toastIn 0.3s ease, toastOut 0.3s ease 1.5s forwards;
+    pointer-events: none;
+  }
+  @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(20px); } }
+  @keyframes toastOut { to { opacity: 0; transform: translateX(-50%) translateY(10px); } }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- ========== SCREEN: MAIN ========== -->
+  <div class="screen active" id="screen-main">
+    <div class="header">
+      <span class="header-logo">🍜</span>
+      <h1>饿了那就</h1>
+      <p class="subtitle">今天想吃什么？</p>
+    </div>
+    <div class="theme-grid" id="themeGrid"></div>
+  </div>
+
+  <!-- ========== CREATION MODAL ========== -->
+  <div class="modal-overlay" id="modalOverlay" style="display:none" onclick="closeModalOutside(event)">
+    <div class="modal" id="creationModal">
+      <h3>✨ 创建你的美食系列</h3>
+      <div class="form-group">
+        <label>系列名称 *</label>
+        <input type="text" id="newName" placeholder="比如：东北菜、印度菜…" maxlength="12">
+      </div>
+      <div class="form-group inline-row">
+        <div>
+          <label>主题 Emoji *</label>
+          <input type="text" id="newEmoji" placeholder="🍲" maxlength="4" style="text-align:center;font-size:28px;">
+        </div>
+        <div>
+          <label>锅具 Emoji</label>
+          <input type="text" id="newPot" placeholder="🍳" maxlength="4" style="text-align:center;font-size:28px;">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>一句话描述</label>
+        <input type="text" id="newDesc" placeholder="比如：酸辣鲜香，地道路边摊" maxlength="20">
+      </div>
+      <div class="form-group inline-row">
+        <div>
+          <label>烹饪动词</label>
+          <input type="text" id="newCookVerb" placeholder="煮/烤/煲/炒" maxlength="4">
+        </div>
+        <div>
+          <label>烹饪时长(秒)</label>
+          <select id="newCookTime">
+            <option value="2000">2 秒</option>
+            <option value="3000" selected>3 秒</option>
+            <option value="4000">4 秒</option>
+            <option value="5000">5 秒</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>完成文案（用 {items} 代替食材名）</label>
+        <input type="text" id="newResultTpl" placeholder="你吃了一顿{items}！满足～" maxlength="60">
+      </div>
+
+      <!-- Ingredients -->
+      <div class="form-group">
+        <label>食材列表 *（至少 2 种）</label>
+        <div class="ingredient-add-row">
+          <input type="text" class="emoji-input" id="newIngEmoji" placeholder="🥩" maxlength="4" style="text-align:center;font-size:22px;">
+          <input type="text" class="name-input" id="newIngName" placeholder="食材名称" maxlength="8" onkeydown="if(event.key==='Enter')addIngredientToNew()">
+          <button class="btn-sm btn-sm-add" onclick="addIngredientToNew()">＋添加</button>
+        </div>
+        <div class="ingredient-list" id="newIngredientList">
+          <span class="empty-hint">还没添加食材哦～</span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="closeModal()">取消</button>
+        <button class="btn btn-primary" onclick="saveCustomTheme()">保存系列 ✅</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: GAME ========== -->
+  <div class="screen" id="screen-game">
+    <div class="game-header">
+      <button class="back-btn" onclick="goMain()" aria-label="返回">←</button>
+      <span class="game-title" id="gameTitle"></span>
+      <span class="step-indicator" id="stepIndicator"></span>
+    </div>
+
+    <!-- Ingredient selection -->
+    <div id="ingredientSection">
+      <p class="section-label" id="ingredientLabel">👇 点击食材放进锅里</p>
+      <div class="ingredient-grid" id="ingredientGrid"></div>
+    </div>
+
+    <!-- Pot -->
+    <div class="pot-area" id="potArea">
+      <div class="steam-container" id="steamContainer" style="display:none">
+        <div class="steam"></div><div class="steam"></div><div class="steam"></div>
+      </div>
+      <span class="pot-emoji" id="potEmoji"></span>
+      <p class="pot-label" id="potLabel"></p>
+      <div class="selected-items" id="selectedItems"></div>
+    </div>
+
+    <!-- Timer (hidden initially) -->
+    <div class="timer-ring" id="timerRing" style="display:none">
+      <svg width="70" height="70" viewBox="0 0 70 70">
+        <circle class="bg" cx="35" cy="35" r="30"/>
+        <circle class="progress" id="timerProgress" cx="35" cy="35" r="30"
+          stroke-dasharray="188.5" stroke-dashoffset="0"/>
+      </svg>
+      <span class="timer-text" id="timerText"></span>
+    </div>
+
+    <!-- Food image (shown after cooking) -->
+    <div class="food-image-area" id="foodImageArea">
+      <div id="foodImageContent"></div>
+      <div class="img-info">
+        <span class="img-label">📸 美食图</span>
+        <button class="btn-share" onclick="shareMeal()" title="复制分享">📋 复制分享</button>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="btn-row" id="btnRow">
+      <button class="btn btn-primary" id="btnCook" disabled onclick="startCooking()">
+        <span id="btnCookLabel">煮好了 🍲</span>
+      </button>
+      <button class="btn btn-secondary" onclick="clearPot()">清空重选 🔄</button>
+    </div>
+    <button class="btn btn-eat" id="btnEat" style="display:none" onclick="eatMeal()">开吃！😋</button>
+  </div>
+
+</div>
+
+<script>
+// ==================== DATA ====================
+const themes = [
+  {
+    id: 'hotpot',
+    name: '火锅',
+    emoji: '🍲',
+    desc: '热气腾腾，越吃越暖',
+    pot: '🍲',
+    potLabel: '锅底已沸腾，快选菜吧！',
+    cookVerb: '煮',
+    cookTime: 3000,
+    cookLabel: '煮好了',
+    resultEmoji: '🍲',
+    resultTitle: '火锅煮好了！',
+    resultTemplate: (items) => `你吃了一顿${items}的火锅！\n热气腾腾，暖心暖胃～`,
+    confetti: ['🔥','🥩','🦐','🥬','🍄','✨'],
+    ingredients: [
+      { emoji: '🥩', name: '肥牛' }, { emoji: '🦐', name: '虾滑' },
+      { emoji: '🥓', name: '午餐肉' }, { emoji: '🥬', name: '白菜' },
+      { emoji: '🍄', name: '金针菇' }, { emoji: '🧈', name: '豆腐' },
+      { emoji: '🍜', name: '宽粉' }, { emoji: '🌽', name: '玉米' },
+      { emoji: '🐑', name: '羊肉卷' }, { emoji: '🦀', name: '蟹棒' },
+      { emoji: '🥟', name: '饺子' }, { emoji: '🫘', name: '豆皮' },
+    ],
+  },
+  {
+    id: 'malatang',
+    name: '麻辣烫',
+    emoji: '🥘',
+    desc: '麻辣鲜香，一碗过瘾',
+    pot: '🥘',
+    potLabel: '汤底咕噜咕噜，选你爱的！',
+    cookVerb: '烫',
+    cookTime: 2500,
+    cookLabel: '烫好了',
+    resultEmoji: '🥘',
+    resultTitle: '麻辣烫出锅啦！',
+    resultTemplate: (items) => `你吃了一大碗${items}的麻辣烫！\n麻辣鲜香，满头大汗～`,
+    confetti: ['🌶️','🔥','🍡','🪷','🥔','✨'],
+    ingredients: [
+      { emoji: '🍡', name: '鱼丸' }, { emoji: '🪷', name: '藕片' },
+      { emoji: '🥔', name: '土豆片' }, { emoji: '🫘', name: '腐竹' },
+      { emoji: '🌿', name: '海带结' }, { emoji: '🥬', name: '生菜' },
+      { emoji: '🍜', name: '粉丝' }, { emoji: '🥚', name: '鹌鹑蛋' },
+      { emoji: '🍄', name: '香菇' }, { emoji: '🥩', name: '牛肉丸' },
+      { emoji: '🧈', name: '油豆腐' }, { emoji: '🌽', name: '玉米段' },
+    ],
+  },
+  {
+    id: 'sweet-soup',
+    name: '糖水',
+    emoji: '🍧',
+    desc: '甜甜糯糯，幸福滋味',
+    pot: '🥣',
+    potLabel: '糖水在熬了，加什么料？',
+    cookVerb: '熬',
+    cookTime: 3500,
+    cookLabel: '熬好了',
+    resultEmoji: '🍧',
+    resultTitle: '糖水熬好啦！',
+    resultTemplate: (items) => `你喝了一碗${items}的糖水！\n甜甜蜜蜜，滋润心田～`,
+    confetti: ['🌸','🍯','🫘','🟣','✨','💕'],
+    ingredients: [
+      { emoji: '🫘', name: '红豆' }, { emoji: '🟣', name: '芋圆' },
+      { emoji: '🫧', name: '珍珠' }, { emoji: '🥥', name: '椰奶' },
+      { emoji: '🥭', name: '芒果' }, { emoji: '🍠', name: '紫薯' },
+      { emoji: '🌰', name: '莲子' }, { emoji: '🍯', name: '银耳' },
+      { emoji: '🍈', name: '西米' }, { emoji: '🍬', name: '龟苓膏' },
+      { emoji: '🧋', name: '仙草' }, { emoji: '🫒', name: '薏米' },
+    ],
+  },
+  {
+    id: 'dumpling',
+    name: '饺子',
+    emoji: '🥟',
+    desc: '自己包的，最香！',
+    pot: '🥟',
+    potLabel: '选好馅料，开始包饺子！',
+    cookVerb: '煮',
+    cookTime: 4000,
+    cookLabel: '煮熟了',
+    resultEmoji: '🥟',
+    resultTitle: '饺子出锅啦！',
+    resultTemplate: (items) => `你包了一盘${items}馅的饺子！\n皮薄馅大，蘸点醋更好吃～`,
+    confetti: ['🥟','✨','🥢','🧧','💫','🥬'],
+    ingredients: [
+      { emoji: '🥩', name: '猪肉' }, { emoji: '🥬', name: '韭菜' },
+      { emoji: '🌽', name: '玉米' }, { emoji: '🦐', name: '虾仁' },
+      { emoji: '🥚', name: '鸡蛋' }, { emoji: '🍄', name: '香菇' },
+      { emoji: '🐑', name: '羊肉' }, { emoji: '🥕', name: '胡萝卜' },
+      { emoji: '🐟', name: '鱼肉' }, { emoji: '🧅', name: '洋葱' },
+      { emoji: '🫚', name: '姜葱' }, { emoji: '🥬', name: '白菜' },
+    ],
+  },
+  {
+    id: 'french',
+    name: '法餐',
+    emoji: '🍽️',
+    desc: '优雅的法式盛宴',
+    pot: '🍳',
+    potLabel: '煎锅已热，选你的主菜！',
+    cookVerb: '烹饪',
+    cookTime: 4500,
+    cookLabel: '烹饪完成',
+    resultEmoji: '🍽️',
+    resultTitle: '法式大餐完成！',
+    resultTemplate: (items) => `你享用了一顿${items}的法式大餐！\nBon Appétit！优雅～`,
+    confetti: ['🍷','✨','🥖','🧀','🌿','⭐'],
+    ingredients: [
+      { emoji: '🥩', name: '菲力牛排' }, { emoji: '🐌', name: '焗蜗牛' },
+      { emoji: '🦆', name: '油封鸭' }, { emoji: '🐟', name: '香煎三文鱼' },
+      { emoji: '🧀', name: '奶酪拼盘' }, { emoji: '🥖', name: '法棍面包' },
+      { emoji: '🍷', name: '红酒' }, { emoji: '🍋', name: '柠檬塔' },
+      { emoji: '🧈', name: '黄油' }, { emoji: '🌿', name: '普罗旺斯香料' },
+      { emoji: '🥚', name: '舒芙蕾' }, { emoji: '🫒', name: '尼斯沙拉' },
+    ],
+  },
+  {
+    id: 'italian',
+    name: '意大利菜',
+    emoji: '🍝',
+    desc: '地中海的美食风情',
+    pot: '🍳',
+    potLabel: '灶台已备好，来选食材！',
+    cookVerb: '烹饪',
+    cookTime: 4000,
+    cookLabel: '烹饪完成',
+    resultEmoji: '🍝',
+    resultTitle: '意式美味完成！',
+    resultTemplate: (items) => `你品尝了${items}的意大利美食！\nDelizioso！美好～`,
+    confetti: ['🍝','✨','🧀','🍅','🌿','🍕'],
+    ingredients: [
+      { emoji: '🍝', name: '意面' }, { emoji: '🍕', name: '玛格丽特披萨' },
+      { emoji: '🧀', name: '帕尔马干酪' }, { emoji: '🍅', name: '番茄' },
+      { emoji: '🌿', name: '罗勒' }, { emoji: '🫒', name: '橄榄' },
+      { emoji: '🥩', name: '帕尔马火腿' }, { emoji: '🍄', name: '松露' },
+      { emoji: '🦐', name: '海鲜' }, { emoji: '🍷', name: '基安蒂红酒' },
+      { emoji: '🧄', name: '大蒜' }, { emoji: '🫒', name: '橄榄油' },
+    ],
+  },
+  {
+    id: 'bbq',
+    name: '烤肉',
+    emoji: '🥩',
+    desc: '滋滋冒油，人间烟火',
+    pot: '🔥',
+    potLabel: '炭火正旺，想烤什么肉？',
+    cookVerb: '烤',
+    cookTime: 3800,
+    cookLabel: '烤好了',
+    resultEmoji: '🥩',
+    resultTitle: '烤肉出炉啦！',
+    resultTemplate: (items) => `你烤了一盘${items}！\n滋滋冒油，外焦里嫩，太满足了～`,
+    confetti: ['🔥','🥩','🥓','🧄','✨','🥬'],
+    ingredients: [
+      { emoji: '🥩', name: '牛五花' }, { emoji: '🥓', name: '猪五花' },
+      { emoji: '🍗', name: '鸡腿肉' }, { emoji: '👅', name: '牛舌' },
+      { emoji: '🍄', name: '口蘑' }, { emoji: '🌽', name: '玉米' },
+      { emoji: '🧅', name: '洋葱圈' }, { emoji: '🫑', name: '青椒' },
+      { emoji: '🌭', name: '烤肠' }, { emoji: '🦐', name: '大虾' },
+      { emoji: '🧄', name: '蒜瓣' }, { emoji: '🥬', name: '生菜包' },
+    ],
+  },
+  {
+    id: 'sushi',
+    name: '寿司/刺身',
+    emoji: '🍣',
+    desc: '新鲜肥美，一口入魂',
+    pot: '🍣',
+    potLabel: '案板已备好，选你的鱼生！',
+    cookVerb: '制作',
+    cookTime: 2200,
+    cookLabel: '做好了',
+    resultEmoji: '🍣',
+    resultTitle: '寿司拼盘完成！',
+    resultTemplate: (items) => `你做了一份${items}的寿司拼盘！\n新鲜肥美，入口即化～`,
+    confetti: ['🍣','🍱','🦐','✨','🍋','💮'],
+    ingredients: [
+      { emoji: '🐟', name: '三文鱼' }, { emoji: '🐠', name: '金枪鱼' },
+      { emoji: '🦐', name: '甜虾' }, { emoji: '🐍', name: '鳗鱼' },
+      { emoji: '🥚', name: '玉子烧' }, { emoji: '🥑', name: '牛油果' },
+      { emoji: '🥒', name: '黄瓜卷' }, { emoji: '🟠', name: '蟹籽' },
+      { emoji: '🦔', name: '海胆' }, { emoji: '🐚', name: '北极贝' },
+      { emoji: '🐙', name: '章鱼' }, { emoji: '🍚', name: '醋饭' },
+    ],
+  },
+  {
+    id: 'claypot-rice',
+    name: '煲仔饭',
+    emoji: '🍚',
+    desc: '锅巴金黄，香气扑鼻',
+    pot: '🫕',
+    potLabel: '砂锅已上灶，加什么料？',
+    cookVerb: '煲',
+    cookTime: 5000,
+    cookLabel: '煲好了',
+    resultEmoji: '🍚',
+    resultTitle: '煲仔饭出炉！',
+    resultTemplate: (items) => `你煲了一锅${items}的煲仔饭！\n锅巴金黄焦脆，淋上酱油，绝了～`,
+    confetti: ['🍚','🥢','✨','🍖','🥬','🔥'],
+    ingredients: [
+      { emoji: '🥓', name: '腊肠' }, { emoji: '🥩', name: '腊肉' },
+      { emoji: '🍖', name: '排骨' }, { emoji: '🐔', name: '滑鸡' },
+      { emoji: '🥩', name: '牛肉片' }, { emoji: '🍄', name: '香菇' },
+      { emoji: '🥬', name: '菜心' }, { emoji: '🥚', name: '窝蛋' },
+      { emoji: '🐟', name: '咸鱼' }, { emoji: '🐸', name: '田鸡' },
+      { emoji: '🍖', name: '叉烧' }, { emoji: '🦪', name: '瑶柱' },
+    ],
+  },
+  {
+    id: 'southeast-asian',
+    name: '东南亚菜',
+    emoji: '🍛',
+    desc: '酸辣鲜香，热带风情',
+    pot: '🍛',
+    potLabel: '香料已备齐，选你的菜！',
+    cookVerb: '烹饪',
+    cookTime: 4200,
+    cookLabel: '烹饪完成',
+    resultEmoji: '🍛',
+    resultTitle: '东南亚盛宴来啦！',
+    resultTemplate: (items) => `你享用了一桌${items}的东南亚风情美食！\n酸辣鲜香，仿佛在清迈的街头～`,
+    confetti: ['🌶️','🥥','🍍','🌿','✨','🌺'],
+    ingredients: [
+      { emoji: '🦐', name: '冬阴功' }, { emoji: '🍛', name: '咖喱蟹' },
+      { emoji: '🥥', name: '椰浆饭' }, { emoji: '🍢', name: '沙爹串' },
+      { emoji: '🥗', name: '青木瓜沙拉' }, { emoji: '🫔', name: '越南春卷' },
+      { emoji: '🍖', name: '肉骨茶' }, { emoji: '🍜', name: '炒粿条' },
+      { emoji: '🍝', name: '泰式炒河粉' }, { emoji: '🥭', name: '芒果糯米饭' },
+      { emoji: '🍚', name: '印尼炒饭' }, { emoji: '🍋', name: '柠檬草' },
+    ],
+  },
+  {
+    id: 'roast',
+    name: '烧腊',
+    emoji: '🦆',
+    desc: '皮脆肉嫩，回味无穷',
+    pot: '🦆',
+    potLabel: '烧腊出炉了，想切哪几样？',
+    cookVerb: '切配',
+    cookTime: 4000,
+    cookLabel: '切好了',
+    resultEmoji: '🦆',
+    resultTitle: '烧腊拼盘上桌！',
+    resultTemplate: (items) => `你切了一盘${items}烧腊拼盘！\n皮脆肉嫩，蘸上酸梅酱，完美～`,
+    confetti: ['🦆','✨','🍖','🥢','🧧','⭐'],
+    ingredients: [
+      { emoji: '🦆', name: '烧鹅' }, { emoji: '🥩', name: '叉烧' },
+      { emoji: '🥓', name: '烧肉' }, { emoji: '🐔', name: '豉油鸡' },
+      { emoji: '🦆', name: '烧鸭' }, { emoji: '🍖', name: '蜜汁排骨' },
+      { emoji: '🥩', name: '脆皮烧腩' }, { emoji: '🦶', name: '卤水鹅掌' },
+      { emoji: '🐔', name: '玫瑰油鸡' }, { emoji: '🕊️', name: '烧乳鸽' },
+      { emoji: '🫘', name: '金钱肚' }, { emoji: '🥢', name: '炸大肠' },
+    ],
+  },
+  {
+    id: 'noodles',
+    name: '面条',
+    emoji: '🍜',
+    desc: '劲道爽滑，汤浓味美',
+    pot: '🍜',
+    potLabel: '面汤已熬好，加什么浇头？',
+    cookVerb: '煮',
+    cookTime: 2800,
+    cookLabel: '煮好了',
+    resultEmoji: '🍜',
+    resultTitle: '面来啦！',
+    resultTemplate: (items) => `你吃了一碗${items}的面！\n劲道爽滑，哧溜一口，暖心暖胃～`,
+    confetti: ['🍜','🥚','🥢','🧄','✨','🌿'],
+    ingredients: [
+      { emoji: '🍜', name: '拉面' }, { emoji: '🍝', name: '拌面' },
+      { emoji: '🥩', name: '叉烧' }, { emoji: '🥚', name: '溏心蛋' },
+      { emoji: '🧅', name: '葱花' }, { emoji: '🌿', name: '海苔' },
+      { emoji: '🎍', name: '笋干' }, { emoji: '🌱', name: '豆芽' },
+      { emoji: '🦴', name: '豚骨汤底' }, { emoji: '🥣', name: '酱油汤底' },
+      { emoji: '🍶', name: '味噌汤底' }, { emoji: '🫘', name: '芝麻酱' },
+    ],
+  },
+];
+
+// ==================== STATE ====================
+let currentTheme = null;
+let selectedIngredients = [];
+let cookingTimer = null;
+let newThemeIngredients = []; // temp storage during creation
+
+// ==================== DOM REFS ====================
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
+
+const screenMain = $('#screen-main');
+const screenGame = $('#screen-game');
+const themeGrid = $('#themeGrid');
+const gameTitle = $('#gameTitle');
+const stepIndicator = $('#stepIndicator');
+const ingredientGrid = $('#ingredientGrid');
+const ingredientLabel = $('#ingredientLabel');
+const ingredientSection = $('#ingredientSection');
+const potArea = $('#potArea');
+const potEmoji = $('#potEmoji');
+const potLabel = $('#potLabel');
+const selectedItems = $('#selectedItems');
+const btnCook = $('#btnCook');
+const btnCookLabel = $('#btnCookLabel');
+const btnEat = $('#btnEat');
+const btnRow = $('#btnRow');
+const timerRing = $('#timerRing');
+const timerProgress = $('#timerProgress');
+const timerText = $('#timerText');
+const steamContainer = $('#steamContainer');
+const foodImageArea = $('#foodImageArea');
+const foodImageContent = $('#foodImageContent');
+const modalOverlay = $('#modalOverlay');
+
+// ==================== FOOD IMAGE LIBRARY ====================
+// Free Unsplash direct image URLs (permanent links, no API key needed)
+const foodImageLibrary = {
+  hotpot: [
+    'https://images.unsplash.com/photo-1563245372-f0895835c02a?w=600&h=350&fit=crop',
+    'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=600&h=350&fit=crop',
+    'https://images.unsplash.com/photo-1569058242253-93e3b72e6a92?w=600&h=350&fit=crop',
+  ],
+  malatang: [
+    'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=600&h=350&fit=crop',
+    'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=600&h=350&fit=crop',
+  ],
+  'sweet-soup': [
+    'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&h=350&fit=crop',
+    'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&h=350&fit=crop',
+  ],
+  dumpling: [
+    'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=600&h=350&fit=crop',
+    'https://images.unsplash.com/photo-1541696490-8744a5a3c383?w=600&h=350&fit=crop',
+  ],
+  french: [
+    'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=350&fit=crop',
+    'https://images.unsplash.com/photo-1551601653-930b73f14cbc?w=600&h=350&fit=crop',
+  ],
+  italian: [
+    'https://images.unsplash.com/photo-1598866594230-a7c12756260f?w=600&h=350&fit=crop',
+    'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=600&h=350&fit=crop',
+  ],
+  bbq: [
+    'https://images.unsplash.com/photo-1558030006-450675393462?w=600&h=350&fit=crop',
+    'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=600&h=350&fit=crop',
+  ],
+  sushi: [
+    'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600&h=350&fit=crop',
+    'https://images.unsplash.com/photo-1553621042-f6e147245754?w=600&h=350&fit=crop',
+  ],
+  'claypot-rice': [
+    'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=600&h=350&fit=crop',
+    'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=600&h=350&fit=crop',
+  ],
+  'southeast-asian': [
+    'https://images.unsplash.com/photo-1559314809-0d155014e29e?w=600&h=350&fit=crop',
+    'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=600&h=350&fit=crop',
+  ],
+  roast: [
+    'https://images.unsplash.com/photo-1598103442097-8b74f8e0dffe?w=600&h=350&fit=crop',
+    'https://images.unsplash.com/photo-1625937329686-204388ed0a0f?w=600&h=350&fit=crop',
+  ],
+  noodles: [
+    'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&h=350&fit=crop',
+    'https://images.unsplash.com/photo-1555126634-323283e090fa?w=600&h=350&fit=crop',
+  ],
+  // Generic fallback images for custom themes
+  _default: [
+    'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=350&fit=crop',
+    'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=350&fit=crop',
+    'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&h=350&fit=crop',
+  ],
+};
+
+function getRandomFoodImage(themeId) {
+  const pool = foodImageLibrary[themeId] || foodImageLibrary._default;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+// ==================== CUSTOM THEME STORAGE ====================
+const CUSTOM_KEY = 'hungry_custom_themes';
+
+function loadCustomThemes() {
+  try {
+    const raw = localStorage.getItem(CUSTOM_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch { return []; }
+}
+
+function saveCustomThemes(list) {
+  localStorage.setItem(CUSTOM_KEY, JSON.stringify(list));
+}
+
+function getAllThemes() {
+  return [...themes, ...loadCustomThemes()];
+}
+
+// ==================== INIT ====================
+function initMainScreen() {
+  const custom = loadCustomThemes();
+  const allThemes = [...themes, ...custom];
+  themeGrid.innerHTML = allThemes.map(t => `
+    <div class="theme-card" onclick="selectTheme('${t.id}')">
+      ${t._custom ? `<button class="delete-custom" onclick="event.stopPropagation();deleteCustomTheme('${t.id}')" title="删除">✕</button>` : ''}
+      <span class="card-emoji">${t.emoji}</span>
+      <div class="card-name">${t.name}</div>
+      <div class="card-desc">${t.desc}</div>
+    </div>
+  `).join('') + `
+    <div class="theme-card add-new" onclick="openCreationModal()">
+      <span class="add-icon">➕</span>
+      <span class="add-text">添加新美食</span>
+    </div>
+  `;
+}
+
+function deleteCustomTheme(id) {
+  if (!confirm('确定要删除这个美食系列吗？')) return;
+  const list = loadCustomThemes().filter(t => t.id !== id);
+  saveCustomThemes(list);
+  initMainScreen();
+}
+
+function selectTheme(themeId) {
+  currentTheme = getAllThemes().find(t => t.id === themeId);
+  if (!currentTheme) return;
+  selectedIngredients = [];
+  showScreen(screenGame);
+  setupGameScreen();
+}
+
+// ==================== CUSTOM THEME CREATION ====================
+function openCreationModal() {
+  newThemeIngredients = [];
+  $('#newName').value = '';
+  $('#newEmoji').value = '';
+  $('#newPot').value = '';
+  $('#newDesc').value = '';
+  $('#newCookVerb').value = '';
+  $('#newCookTime').value = '3000';
+  $('#newResultTpl').value = '';
+  $('#newIngEmoji').value = '';
+  $('#newIngName').value = '';
+  renderNewIngredients();
+  modalOverlay.style.display = 'flex';
+  setTimeout(() => $('#newName').focus(), 200);
+}
+
+function closeModal() {
+  modalOverlay.style.display = 'none';
+  newThemeIngredients = [];
+}
+
+function closeModalOutside(e) {
+  if (e.target === modalOverlay) closeModal();
+}
+
+function addIngredientToNew() {
+  const emoji = $('#newIngEmoji').value.trim();
+  const name = $('#newIngName').value.trim();
+  if (!emoji) { shakeElement($('#newIngEmoji')); return; }
+  if (!name) { shakeElement($('#newIngName')); return; }
+  if (newThemeIngredients.length >= 12) {
+    showToast('最多添加 12 种食材哦～');
+    return;
+  }
+  // Check duplicate
+  if (newThemeIngredients.some(i => i.name === name)) {
+    showToast('这个食材已经添加过了～');
+    return;
+  }
+  newThemeIngredients.push({ emoji, name });
+  $('#newIngEmoji').value = '';
+  $('#newIngName').value = '';
+  $('#newIngEmoji').focus();
+  renderNewIngredients();
+}
+
+function renderNewIngredients() {
+  const container = $('#newIngredientList');
+  if (newThemeIngredients.length === 0) {
+    container.innerHTML = '<span class="empty-hint">还没添加食材哦～</span>';
+    return;
+  }
+  container.innerHTML = newThemeIngredients.map((ing, i) => `
+    <span class="chip">
+      ${ing.emoji} ${ing.name}
+      <button class="btn-sm btn-sm-del" onclick="removeNewIngredient(${i})" title="删除">✕</button>
+    </span>
+  `).join('');
+}
+
+function removeNewIngredient(index) {
+  newThemeIngredients.splice(index, 1);
+  renderNewIngredients();
+}
+
+function saveCustomTheme() {
+  const name = $('#newName').value.trim();
+  const emoji = $('#newEmoji').value.trim();
+  const pot = ($('#newPot').value.trim() || emoji || '🍳');
+  const desc = $('#newDesc').value.trim() || '自定义美食系列';
+  const cookVerb = $('#newCookVerb').value.trim() || '烹饪';
+  const cookTime = parseInt($('#newCookTime').value) || 3000;
+  const resultTpl = $('#newResultTpl').value.trim() || `你享用了一顿{items}！满足～`;
+
+  // Validation
+  if (!name) { shakeElement($('#newName')); $('#newName').focus(); return; }
+  if (!emoji) { shakeElement($('#newEmoji')); $('#newEmoji').focus(); return; }
+  if (newThemeIngredients.length < 2) {
+    showToast('请至少添加 2 种食材～');
+    return;
+  }
+
+  const id = 'custom-' + Date.now();
+  const newTheme = {
+    id,
+    name,
+    emoji,
+    desc,
+    pot,
+    potLabel: `准备好了，来选${name}的食材吧！`,
+    cookVerb,
+    cookTime,
+    cookLabel: `${cookVerb}好了`,
+    resultEmoji: emoji,
+    resultTitle: `${name}完成！`,
+    resultTemplate: (items) => resultTpl.replace(/\{items\}/g, items),
+    confetti: ['✨','🎉','⭐','💫', emoji],
+    ingredients: [...newThemeIngredients],
+    _custom: true,
+  };
+
+  const existing = loadCustomThemes();
+  // Check duplicate name
+  if (existing.some(t => t.name === name) || themes.some(t => t.name === name)) {
+    showToast('这个名称已存在，换一个吧～');
+    return;
+  }
+
+  existing.push(newTheme);
+  saveCustomThemes(existing);
+  closeModal();
+  initMainScreen();
+  showToast(`✨ "${name}" 系列已添加！`);
+}
+
+// ==================== TOAST ====================
+function showToast(msg) {
+  const old = document.querySelector('.toast');
+  if (old) old.remove();
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2000);
+}
+
+// ==================== SCREEN NAVIGATION ====================
+function showScreen(screen) {
+  $$('.screen').forEach(s => s.classList.remove('active'));
+  screen.classList.add('active');
+}
+
+function goMain() {
+  if (cookingTimer) { clearInterval(cookingTimer); cookingTimer = null; }
+  selectedIngredients = [];
+  currentTheme = null;
+  closeModal();
+  showScreen(screenMain);
+}
+
+// ==================== GAME SETUP ====================
+function setupGameScreen() {
+  const t = currentTheme;
+  gameTitle.textContent = t.name;
+  stepIndicator.textContent = '🛒 选食材';
+
+  // Ingredients
+  ingredientLabel.textContent = `👇 点击食材，放进${t.potLabel.includes('锅') ? '锅里' : '碗里'}`;
+  ingredientGrid.innerHTML = t.ingredients.map((ing, i) => `
+    <div class="ingredient" data-index="${i}" onclick="toggleIngredient(${i}, this)">
+      <span class="emoji">${ing.emoji}</span>
+      <span class="name">${ing.name}</span>
+    </div>
+  `).join('');
+
+  // Pot
+  potEmoji.textContent = t.pot;
+  potLabel.textContent = t.potLabel;
+  selectedItems.innerHTML = '';
+  potArea.classList.remove('has-items', 'cooking');
+  steamContainer.style.display = 'none';
+
+  // Buttons
+  btnCook.disabled = true;
+  btnCook.style.display = '';
+  btnRow.style.display = 'flex';
+  btnEat.style.display = 'none';
+
+  // Timer
+  timerRing.style.display = 'none';
+  timerProgress.style.strokeDashoffset = '0';
+
+  // Section visibility
+  ingredientSection.style.display = '';
+  foodImageArea.classList.remove('show');
+  updateCookButton();
+}
+
+// ==================== INGREDIENT SELECTION ====================
+function toggleIngredient(index, el) {
+  const ing = currentTheme.ingredients[index];
+  const exists = selectedIngredients.findIndex(i => i.emoji === ing.emoji && i.name === ing.name);
+
+  if (exists >= 0) {
+    // Remove
+    selectedIngredients.splice(exists, 1);
+    el.classList.remove('selected');
+  } else {
+    // Add
+    if (selectedIngredients.length >= 8) {
+      shakeElement(el);
+      return;
+    }
+    selectedIngredients.push({ ...ing });
+    el.classList.add('selected');
+    // Re-add animation
+    el.classList.remove('selected');
+    void el.offsetWidth;
+    el.classList.add('selected');
+  }
+
+  updatePot();
+  updateCookButton();
+}
+
+function shakeElement(el) {
+  el.style.animation = 'none';
+  void el.offsetWidth;
+  el.style.animation = 'shake 0.4s ease';
+  setTimeout(() => el.style.animation = '', 400);
+}
+
+// Add shake keyframes
+const shakeStyle = document.createElement('style');
+shakeStyle.textContent = `
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    50% { transform: translateX(6px); }
+    75% { transform: translateX(-4px); }
+  }
+`;
+document.head.appendChild(shakeStyle);
+
+function updatePot() {
+  if (selectedIngredients.length > 0) {
+    potArea.classList.add('has-items');
+    potLabel.textContent = `已选 ${selectedIngredients.length} 种食材`;
+    selectedItems.innerHTML = selectedIngredients.map(i =>
+      `<span class="selected-chip">${i.emoji} ${i.name}</span>`
+    ).join('');
+  } else {
+    potArea.classList.remove('has-items');
+    potLabel.textContent = currentTheme.potLabel;
+    selectedItems.innerHTML = '';
+  }
+}
+
+function updateCookButton() {
+  btnCook.disabled = selectedIngredients.length === 0;
+}
+
+function clearPot() {
+  selectedIngredients = [];
+  $$('.ingredient').forEach(el => el.classList.remove('selected'));
+  updatePot();
+  updateCookButton();
+}
+
+// ==================== COOKING ====================
+function startCooking() {
+  const t = currentTheme;
+
+  // Hide ingredients, show cooking
+  ingredientSection.style.display = 'none';
+  btnRow.style.display = 'none';
+  stepIndicator.textContent = '🔥 烹饪中...';
+
+  // Pot animation
+  potArea.classList.add('cooking');
+  steamContainer.style.display = 'flex';
+  potLabel.textContent = `${t.cookVerb}制中...`;
+
+  // Timer ring
+  timerRing.style.display = 'block';
+  const circumference = 2 * Math.PI * 30; // ~188.5
+  timerProgress.style.strokeDasharray = circumference;
+  timerProgress.style.strokeDashoffset = '0';
+  timerText.textContent = Math.ceil(t.cookTime / 1000);
+
+  const startTime = Date.now();
+  const duration = t.cookTime;
+
+  cookingTimer = setInterval(() => {
+    const elapsed = Date.now() - startTime;
+    const remaining = Math.max(0, duration - elapsed);
+    const progress = elapsed / duration;
+
+    timerProgress.style.strokeDashoffset = (circumference * progress).toFixed(2);
+    timerText.textContent = Math.ceil(remaining / 1000);
+
+    if (remaining <= 0) {
+      clearInterval(cookingTimer);
+      cookingTimer = null;
+      finishCooking();
+    }
+  }, 100);
+}
+
+function finishCooking() {
+  const t = currentTheme;
+
+  // Stop animations
+  potArea.classList.remove('cooking');
+  steamContainer.style.display = 'none';
+  timerRing.style.display = 'none';
+
+  // Update UI
+  stepIndicator.textContent = '✅ 完成！';
+  potLabel.textContent = `${t.cookLabel}！可以吃了！`;
+  potEmoji.textContent = t.resultEmoji;
+
+  // Show food image
+  showFoodImage(t);
+
+  // Show eat button
+  btnRow.style.display = 'none';
+  btnEat.style.display = 'block';
+  btnEat.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function showFoodImage(theme) {
+  const imgUrl = getRandomFoodImage(theme.id);
+  foodImageContent.innerHTML = `
+    <img src="${imgUrl}" alt="${theme.name}"
+         onerror="this.parentElement.innerHTML='<div class=\\'img-placeholder\\'>${theme.resultEmoji}</div>'"
+         loading="lazy">
+  `;
+  foodImageArea.classList.add('show');
+}
+
+// ==================== SHARE ====================
+function shareMeal() {
+  const t = currentTheme;
+  const itemsList = selectedIngredients.map(i => i.name).join('、');
+  const text = `🍜 饿了那就 — ${t.resultTitle}\n${t.resultTemplate(itemsList)}\n\n来玩美食小游戏吧！`;
+
+  // Try Web Share API first
+  if (navigator.share) {
+    navigator.share({ title: t.resultTitle, text }).catch(() => {});
+  }
+
+  // Also copy to clipboard
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('📋 已复制分享文案！可粘贴到朋友圈/聊天');
+    }).catch(() => {
+      showToast('📋 分享文案已准备好～');
+    });
+  } else {
+    // Fallback: select and copy
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showToast('📋 已复制！去分享美食吧～'); }
+    catch { showToast('分享文案：' + text); }
+    document.body.removeChild(ta);
+  }
+}
+
+// ==================== EAT ====================
+function eatMeal() {
+  const t = currentTheme;
+  const itemsList = selectedIngredients.map(i => i.name).join('、');
+
+  // Create overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  overlay.innerHTML = `
+    <div class="result-card" id="resultCard">
+      <span class="result-emoji">${t.resultEmoji}</span>
+      <div class="result-title">${t.resultTitle}</div>
+      <div class="result-desc">${t.resultTemplate(itemsList)}</div>
+      <button class="btn btn-primary" onclick="dismissResult()" style="width:100%">
+        再来一次 🔄
+      </button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  // Confetti
+  spawnConfetti(t.confetti);
+
+  // Click overlay to dismiss
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) dismissResult();
+  });
+}
+
+function dismissResult() {
+  const overlay = document.querySelector('.overlay');
+  if (overlay) overlay.remove();
+  // Clean up any remaining confetti
+  document.querySelectorAll('.confetti').forEach(c => c.remove());
+  goMain();
+}
+
+function spawnConfetti(emojis) {
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => {
+      const el = document.createElement('span');
+      el.className = 'confetti';
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.left = Math.random() * 100 + '%';
+      el.style.top = -(Math.random() * 40) + 'px';
+      el.style.animationDuration = (1.2 + Math.random() * 1.8) + 's';
+      el.style.animationDelay = Math.random() * 0.3 + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 2500);
+    }, i * 60);
+  }
+}
+
+// ==================== KEYBOARD SHORTCUTS ====================
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (modalOverlay.style.display === 'flex') {
+      closeModal();
+      return;
+    }
+    const overlay = document.querySelector('.overlay');
+    if (overlay) {
+      dismissResult();
+    } else if (screenGame.classList.contains('active')) {
+      goMain();
+    }
+  }
+  if (e.key === 'Enter' && screenGame.classList.contains('active')) {
+    if (btnEat.style.display !== 'none') {
+      eatMeal();
+    } else if (!btnCook.disabled) {
+      startCooking();
+    }
+  }
+  // Ctrl+Enter to add ingredient in modal
+  if (e.key === 'Enter' && e.ctrlKey && modalOverlay.style.display === 'flex') {
+    addIngredientToNew();
+  }
+});
+
+// ==================== START ====================
+initMainScreen();
+</script>
+</body>
+</html>
