@@ -1,10 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <title>测试</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SY · 作品集</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #faf8f5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: #2c2a28;
+            line-height: 1.5;
+            padding: 2rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 300;
+            color: #2c2a28;
+        }
+        p {
+            color: #6b6359;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e8e2d9;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #8b6f4c;
+        }
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .card {
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 20px;
+            border: 1px solid #f0ebe5;
+        }
+        .card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.4rem;
+        }
+        .card p {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .card a {
+            color: #8b6f4c;
+            text-decoration: none;
+        }
+        .footer {
+            border-top: 1px solid #e8e2d9;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            color: #8f8478;
+            font-size: 0.8rem;
+        }
+        .footer a {
+            color: #8b6f4c;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello, GitHub Pages</h1>
-    <p>如果你能看到这行字，说明 Pages 服务正常。</p >
+    <nav class="nav">
+        <span>SY</span>
+        <div>
+            GitHub
+            <span style="margin: 0 0.8rem;">·</span>
+            
+        </div>
+    </nav>
+
+    <h1>把想法落成产品。</h1>
+    <p style="margin-bottom: 1.5rem;">结合 AI 工具与前端技术，独立完成从需求到部署的完整项目。</p >
+
+    <div class="projects">
+        <div class="card">
+            <h3>减脂追踪</h3>
+            <p>记录体重、体脂与饮食，查看趋势图表。</p >
+            
+        </div>
+        <div class="card">
+            <h3>饿了那就</h3>
+            <p>美食互动游戏，选菜 · 煮 · 吃。</p >
+            
+        </div>
+        <div class="card">
+            <h3>LianA 泡泡</h3>
+            <p>私密恋爱记录工具，数据仅存在本地设备中。</p >
+            
+        </div>
+    </div>
+
+    <footer class="footer">
+        <span>© 2026 SY · 作品集</span>
+        <div>
+            
+            <span style="margin: 0 0.8rem;">·</span>
+            
+        </div>
+    </footer>
 </body>
 </html>
