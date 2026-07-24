@@ -21,6 +21,12 @@
 - 链接：[点击体验](https://syl1227.github.io/hungry-then-eat.html)
 
 ---
+## 项目三：LianA 泡泡
+
+一个私密恋爱记录工具，数据仅存储在本地设备中。
+
+- 技术：React + TypeScript + Vite
+- 链接：[点击体验](https://syl1227.github.io/LianApaopao/)
 
 ## 关于我
 
